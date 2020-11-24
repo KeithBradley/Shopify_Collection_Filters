@@ -1,0 +1,91 @@
+{% comment %}
+if template contains 'collection' and collection.all_tags.size > 1
+{% endcomment %}
+
+{% if collection.all_tags.size > 1 %}
+
+	{% assign c = 0 %} 
+	{% for t in collection.all_tags %}
+	{% capture cat %}{{ cat }}{% capture temp_cat %}{% if t contains '__' %}{% assign cat_grp = t | split: '__' %}{{ cat_grp.first }}{% endif %}{% endcapture %}{% unless cat contains temp_cat %}{% if t contains '__' %}{% assign new_cat_grp = t | split: '__' %}{{ new_cat_grp.first }}{% endif %}{% unless forloop.last %}+{% endunless %}{% assign c = c | plus: 1 %}{% endunless %}{% endcapture %}
+	{% endfor %}
+
+	{% assign cat_array = cat | split: '+' %}
+
+	{% for i in cat_array %}
+		{% unless i == '' %}
+		<div class="card card-brand-solid card-filters mb-4" id="filter-block-{{ i }}">
+			<div class="card-header">
+				<span class="d-none d-lg-block">Filter by {{ i }}</span>
+				<button class="btn-unstyled d-inline-block d-lg-none" type="button" data-toggle="collapse" data-target="#filters-{{ i }}" aria-expanded="false" aria-controls="filters-{{ i }}">
+					Filter by {{ i }}
+				</button>
+			</div>
+			<div class="collapse" id="filters-{{ i }}">
+				<div class="card-body">
+
+					<!-- ARE ANY FILTERS ACTIVE -->
+					
+					{% assign has_active = 'false' %}
+
+					{% for t in collection.all_tags %}
+						{% if t contains i %}
+							{% if current_tags contains t %}
+								{% assign has_active = 'true' %}
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					<!-- END -->
+
+					{% assign filter_count = 0 %}
+					<ul class="filter-nav">
+						{% for t in collection.all_tags %}
+						<!-- if tag contains the category title -->
+						{% if t contains i %}
+						<!-- strip out tag category prefix and add/remove link for tag filtering -->
+						{% if current_tags contains t %}
+						<li class="active">
+							<span class="checkbox">
+								<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-check fa-w-16"><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" class=""></path></svg>
+							</span>
+							{{ t | remove: i | remove: '_' | link_to_remove_tag: t }}
+						</li>
+						{% assign filter_count = filter_count | plus: 1 %}
+						{% else %}
+							{% unless has_active == 'true' %}
+
+							<!-- DOES THE PRODUCT RESULTS INCLUDE A PRODUCT WITH THIS TAG? -->
+							{% assign product_has_tag = 'false' %}
+							{% for product in collection.products %}
+								{% if product.tags contains t %}
+									{% assign product_has_tag = 'true' %}
+								{% endif %}
+							{% endfor %}
+
+							{% if product_has_tag == 'true' %}
+							<li>
+								<span class="checkbox">
+									<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-check fa-w-16"><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" class=""></path></svg>
+								</span>
+								{{ t | remove: i | remove: '_' | link_to_add_tag: t }}
+							</li>
+							{% assign filter_count = filter_count | plus: 1 %}
+							{% endif %}
+							{% endunless %}
+
+						{% endif %}
+						{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		{% if filter_count == 0 %}
+		<style>
+			#filter-block-{{ i }} {
+				display: none;
+			}
+		</style>
+		{% endif %}
+		{% endunless %}
+	{% endfor %}
+{% endif %}
