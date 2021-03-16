@@ -14,3 +14,5 @@ E.g. ```Brand__Nike``` or ```Size__Small```
 Note that there is no css included with the snippet. It's been designed ot work with Bootstrap 4 
 
 Inspired/Adapted from https://gist.github.com/darryn/8047749
+
+![GITHUB__Shopify-Filters](https://user-images.githubusercontent.com/390332/111279941-265cc480-8633-11eb-8987-41daf95f175a.gif)
