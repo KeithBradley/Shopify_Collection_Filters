@@ -4,8 +4,8 @@ Shopify  **Product Tag Filters** for collection pages.
 
 ## Setup
 
-1. Copy the file to the snippets directory ```snippets/collection-filters-collection.liquid```
-2. Include on your ```collection.liquid``` template ```{% include 'collection-filters-collection' %}```
+1. Copy the file to the snippets directory ```snippets/collection-filters-grouped.liquid```
+2. Include on your ```collection.liquid``` template ```{% include 'collection-filters-grouped' %}```
 
 Product tag naming convension needs to be 'FilterName__FilterValue' (Double underscore)
 
