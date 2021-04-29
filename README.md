@@ -11,7 +11,7 @@ Product tag naming convension needs to be 'FilterName__FilterValue' (Double unde
 
 E.g. ```Brand__Nike``` or ```Size__Small```
 
-Note that there is no css included with the snippet. It's been designed ot work with Bootstrap 4 
+Note that there is no css included with the snippet. It's been designed to work with Bootstrap 4 
 
 Inspired/Adapted from https://gist.github.com/darryn/8047749
 
